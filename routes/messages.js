@@ -4,7 +4,7 @@ const Messages = require("../models/messageModel");
 // get all messages
 router.post("/getAllMsgs", async (req, res) => {
   try {
-    const { from, to, sendDate } = req.body;
+    const { from, to } = req.body;
 
     const messages = await Messages.find({
       users: {
@@ -18,7 +18,7 @@ router.post("/getAllMsgs", async (req, res) => {
       return {
         fromSelf: message.sender.toString() === from,
         message: message.message.text,
-        sendDate,
+        sendDate: message.sendDate,
       };
     });
     // console.log(projectedMessages);
@@ -31,13 +31,12 @@ router.post("/getAllMsgs", async (req, res) => {
 // send message
 router.post("/addMsg", async (req, res) => {
   try {
-    const { from, to, message, sendDate } = req.body;
+    const { from, to, message } = req.body;
 
     const newMsg = {
       message: { text: message },
       users: [from, to],
       sender: from,
-      sendDate,
     };
 
     const data = await Messages.create(newMsg);

@@ -27,6 +27,22 @@ router.put("/:userId", async (req, res) => {
   }
 });
 
+// Update user login Date
+router.put("/updateLoginDate/:userId", async (req, res) => {
+  try {
+    const data = await Users.findByIdAndUpdate(
+      req.params.userId,
+      {
+        loginDate: Date.now(),
+      },
+      { $news: true }
+    );
+    res.status(200).json("Update successfully");
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 // get all users but not including current user
 router.get("/:id", async (req, res) => {
   try {
